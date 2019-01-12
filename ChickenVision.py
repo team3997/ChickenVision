@@ -52,7 +52,7 @@ def threshold_video(frame):
 
     # Convert BGR to HSV
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
-    # define range of red in HSV
+    # define range of color in HSV
     lower_color = np.array([60,105,34])
     upper_color = np.array([93, 255, 255])
     # hold the HSV image to get only red colors
