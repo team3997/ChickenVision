@@ -5,7 +5,7 @@
 <ul>
   <li>Raspberry Pi running <a href="https://wpilib.screenstepslive.com/s/currentCS/m/85074/l/1027241-using-the-raspberry-pi-for-frc">WPILib image</a> </li>
   <li>Green LED Ring to surround camera (You can use different colors, but must change HSV Threshold)</li>
-  <li>Microsoft Lifecam 3000 (You can use a different camera, but must update diagonal field of view)</li>
+  <li>Microsoft Lifecam 3000 (You can use a different camera, but must update diagonal field of view <b><i>line 32</i></b>)</li>
   <li>(Optional) USB WiFi Adapter for Raspberry Pi. This allows Pi to wirelessly send stream over home network for testing </li> 
   <li> Camera mounted in horizontal center of robot. Code can be updated to support offsets, but I currently do not know how to do that</li>
 </ul>
@@ -14,7 +14,7 @@
 <h3>Things you may need to configure</h3>
 <ul>
   <li>Exposure. You will need to adjust the exposure based on LED light ring. The lower you can set this value while still tracking vision targets, the better. My current setup is 21</li>
-  <li>HSV Threshold. Depending on LED ring and exposure level, may need to adjust HSV Threshold. If using GRIP to find values: webcam->median_blur(5)->HSV Threshold->adjust values until targets are white. (More documentation on this step coming)</li>
+  <li>HSV Threshold. Depending on LED ring and exposure level, may need to adjust HSV Threshold (<b><i>line 56-57</i></b>). If using GRIP to find values: webcam->median_blur(5)->HSV Threshold->adjust values until targets are white. (More documentation on this step coming)</li>
   </li> 
 </ul>
 
