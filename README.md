@@ -7,6 +7,7 @@
   <li>Green LED Ring to surround camera (You can use different colors, but must change HSV Threshold)</li>
   <li>Microsoft Lifecam 3000 (You can use a different camera, but must update diagonal field of view)</li>
   <li>(Optional) USB WiFi Adapter for Raspberry Pi. This allows Pi to wirelessly send stream over home network for testing </li> 
+  <li> Camera mounted in horizontal center of robot. Code can be updated to support offsets, but I currently do not know how to do that</li>
 </ul>
 
 <h2>Configuration</h2>
@@ -24,4 +25,8 @@
   <li>If angle is to two targets are the same, it picks the left target. You can change this in code</li>
   <li>Pre-calculated (but sub-optimal) built in HSV Threshold range</li>
   <li>Should be plug-and-play</li>
+  <li>All contours have green shapes around them along with a white dot and vertical line running through their center point</li>
+  <li>Targets have vertical blue line in between contours. Yaw is calculated from that x coordinate. There should only be one blue line (one Target) at a time.</li>
+  <li>Rounded yaw (horizontal angle from camera) is displayed in large white font at the top of the screen</li>
+  <li>Team 254's explanations linked in comments of angle calculation functions</li>
 </ul>
