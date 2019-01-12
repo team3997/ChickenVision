@@ -33,7 +33,7 @@ diagonalView = math.radians(68.5)
 horizontalAspect = 16
 verticalAspect = 9
 
-diagonalAspect = math.sqrt(math.pow(horizontalAspect, 2) + math.pow(verticalAspect, 2))
+diagonalAspect = math.hypot(horizontalAspect, verticalAspect)
 horizontalView = math.atan(math.tan(diagonalView/2) * (horizontalAspect / diagonalAspect)) * 2
 verticalView = math.atan(math.tan(diagonalView/2) * (verticalAspect / diagonalAspect)) * 2
 
@@ -43,11 +43,6 @@ V_FOCAL_LENGTH = image_height / (2*math.tan((verticalView/2)))
 # Masks the video based on a range of hsv colors
 # Takes in a frame, returns a masked frame
 def threshold_video(frame):
-    # Gets the shape of video
-    screenHeight, screenWidth, channels = frame.shape
-    # Gets center of height and width
-    centerX = (screenWidth / 2) - .5
-    centerY = (screenHeight / 2) - .5
     blur = cv2.medianBlur(frame, 5)
 
     # Convert BGR to HSV
@@ -67,10 +62,10 @@ def threshold_video(frame):
 # Finds the contours from the masked image and displays them on original stream
 def findContours(frame, mask):
     # Finds contours
-    im2, contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
+    _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_TC89_KCOS)
     # Take each frame
     # Gets the shape of video
-    screenHeight, screenWidth, channels = frame.shape
+    screenHeight, screenWidth, _ = frame.shape
     # Gets center of height and width
     centerX = (screenWidth / 2) - .5
     centerY = (screenHeight / 2) - .5
@@ -218,10 +213,7 @@ def findTargets(contours, image, centerX, centerY):
 
 # Checks if contours are worthy based off of contour area and (not currently) hull area
 def checkContours(cntSize, hullSize):
-    if (cntSize >= 10):
-        return True
-    else:
-        return False;
+    return cntSize > 10
 
 
 #Forgot how exactly it works, but it works!
