@@ -26,8 +26,8 @@ import math
 ###################### PROCESSING OPENCV ################################
 
 #Angles in radians
-image_width = 320
-image_height = 240
+image_width = 480
+image_height = 270
 #Lifecam 3000
 diagonalView = math.radians(68.5)
 horizontalAspect = 16
@@ -52,7 +52,7 @@ def threshold_video(frame):
 
     # Convert BGR to HSV
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
-    # define range of color in HSV
+    # define range of red in HSV
     lower_color = np.array([60,105,34])
     upper_color = np.array([93, 255, 255])
     # hold the HSV image to get only red colors
@@ -78,7 +78,7 @@ def findContours(frame, mask):
     image = frame.copy()
     # Processes the contours, takes in (contours, output_image, (centerOfImage) #TODO finding largest
     if len(contours) != 0:
-        image = processLargestContours(contours, image, centerX, centerY)
+        image = findTargets(contours, image, centerX, centerY)
     # Shows the contours overlayed on the original video
     return image
 
