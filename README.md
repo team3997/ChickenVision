@@ -1,2 +1,26 @@
 # ChickenVision
-Python Target Tracking for 2019 FRC Season
+
+<h2>Requirements</h2>
+<ul>
+  <li>Raspberry Pi running <a href="https://wpilib.screenstepslive.com/s/currentCS/m/85074/l/1027241-using-the-raspberry-pi-for-frc">WPILib image</a> </li>
+  <li>Green LED Ring to surround camera (You can use different colors, but must change HSV Threshold)</li>
+  <li>Microsoft Lifecam 3000 (You can use a different camera, but must update diagonal field of view)</li>
+  <li>(Optional) USB WiFi Adapter for Raspberry Pi. This allows Pi to wirelessly send stream over home network for testing </li> 
+</ul>
+
+<h2>Configuration</h2>
+<h3>Things you may need to configure</h3>
+<ul>
+  <li>Exposure. You probably will need to adjust the exposure based on LED light ring. The lower you can set this value while still tracking vision targets, the better. Current setup is 21</li>
+  <li>HSV Threshold. Depending on LED ring and exposure level, may need to adjust HSV Threshold. If using GRIP to find values: webcam->median_blur(5)->HSV Threshold->adjust values until targets are white. (More documentation on this step coming)</li>
+  </li> 
+</ul>
+
+<h2>Functionality/Features</h3>
+<ul>
+  <li>Sanity checks: Filters out targets whose rays form a V, only recognizes targets whose contours are adjacent</li>
+  <li>Returns the angle (in degrees) of closest target for easy integration for robot program (Gyro)</li>
+  <li>If angle is to two targets are the same, it picks the left target. You can change this in code</li>
+  <li>Pre-calculated (but sub-optimal) built in HSV Threshold range</li>
+  <li>Should be plug-and-play</li>
+</ul>
