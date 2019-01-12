@@ -20,7 +20,7 @@
 
 <h2>Functionality/Features</h3>
 <ul>
-  <li>Sanity checks: Filters out targets whose rays form a V, only recognizes targets whose contours are adjacent</li>
+  <li>Sanity checks: Filters out contours whose rays form a V, only recognizes targets whose contours are adjacent</li>
   <li>Returns the angle (in degrees) of closest target for easy integration for robot program (Gyro)</li>
   <li>If angle is to two targets are the same, it picks the left target. You can change this in code</li>
   <li>Pre-calculated (but sub-optimal) built in HSV Threshold range</li>
