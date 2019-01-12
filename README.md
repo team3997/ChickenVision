@@ -13,7 +13,7 @@
 <h2>Configuration</h2>
 <h3>Things you may need to configure</h3>
 <ul>
-  <li>Exposure. You probably will need to adjust the exposure based on LED light ring. The lower you can set this value while still tracking vision targets, the better. Current setup is 21</li>
+  <li>Exposure. You will need to adjust the exposure based on LED light ring. The lower you can set this value while still tracking vision targets, the better. My current setup is 21</li>
   <li>HSV Threshold. Depending on LED ring and exposure level, may need to adjust HSV Threshold. If using GRIP to find values: webcam->median_blur(5)->HSV Threshold->adjust values until targets are white. (More documentation on this step coming)</li>
   </li> 
 </ul>
