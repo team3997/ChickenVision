@@ -1,4 +1,5 @@
 # ChickenVision
+![Alt text](https://cdn.discordapp.com/attachments/518873567065276416/533489000762310667/githubimage.png?raw=true "Example")
 
 <h2>Requirements</h2>
 <ul>
