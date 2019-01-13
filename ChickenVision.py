@@ -120,35 +120,30 @@ def findTargets(contours, image, centerX, centerY):
                 else:
                     cx, cy = 0, 0
 
+                #### CALCULATES ROTATION OF CONTOUR BY FITTING ELLIPSE ##########
+                rotation = getEllipseRotation(image, cnt)
+
+                # Calculates yaw of contour (horizontal position in degrees)
+                yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
+                # Calculates yaw of contour (horizontal position in degrees)
+                pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
+
+                ##### DRAWS CONTOUR######
                 # Gets rotated bounding rectangle of contour
                 rect = cv2.minAreaRect(cnt)
                 # Creates box around that rectangle
                 box = cv2.boxPoints(rect)
                 # Not exactly sure
                 box = np.int0(box)
-                # Gets center of rotated rectangle
-                center = rect[0]
-                # Gets rotation of rectangle; same as rotation of contour
-                rotation = rect[2]
-                # Gets width and height of rotated rectangle
-                width = rect[1][0]
-                height = rect[1][1]
-                # Maps rotation to (-90 to 90). Makes it easier to tell direction of slant
-                rotation = translateRotation(rotation, width, height)
+                # Draws rotated rectangle
+                cv2.drawContours(image, [box], 0, (23, 184, 80), 3)
 
-                # Gets smaller side
-                if width > height:
-                    smaller_side = height
-                else:
-                    smaller_side = width
+
                 # Calculates yaw of contour (horizontal position in degrees)
                 yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
                 # Calculates yaw of contour (horizontal position in degrees)
                 pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
 
-
-                # Draws rotated rectangle
-                cv2.drawContours(image, [box], 0, (23, 184, 80), 3)
 
                 # Draws a vertical white line passing through center of contour
                 cv2.line(image, (cx, screenHeight), (cx, 0), (255, 255, 255))
@@ -173,7 +168,9 @@ def findTargets(contours, image, centerX, centerY):
                 cv2.circle(image, center, radius, (23, 184, 80), 1)
 
                 # Appends important info to array
-                biggestCnts.append([cx, cy, rotation, cnt])
+                if [cx, cy, rotation, cnt] not in biggestCnts:
+                     biggestCnts.append([cx, cy, rotation, cnt])
+
 
         # Sorts array based on coordinates (leftmost to rightmost) to make sure contours are adjacent
         biggestCnts = sorted(biggestCnts, key=lambda x: x[0])
@@ -182,23 +179,25 @@ def findTargets(contours, image, centerX, centerY):
             #Rotation of two adjacent contours
             tilt1 = biggestCnts[i][2]
             tilt2 = biggestCnts[i + 1][2]
+
             #x coords of contours
             cx1 = biggestCnts[i][0]
             cx2 = biggestCnts[i + 1][0]
 
             cy1 = biggestCnts[i][1]
             cy2 = biggestCnts[i + 1][1]
-
             # If contour angles are opposite
             if (np.sign(tilt1) != np.sign(tilt2)):
                 centerOfTarget = math.floor((cx1 + cx2) / 2)
-
+                #ellipse negative tilt means rotated to right
+                #Note: if using rotated rect (min area rectangle)
+                #      negative tilt means rotated to left
                 # If left contour rotation is tilted to the left then skip iteration
-                if (tilt1 < 0):
+                if (tilt1 > 0):
                     if (cx1 < cx2):
                         continue
                 # If left contour rotation is tilted to the left then skip iteration
-                if (tilt2 < 0):
+                if (tilt2 > 0):
                     if (cx2 < cx1):
                         continue
                 #Angle from center of camera to target (what you should pass into gyro)
@@ -216,8 +215,11 @@ def findTargets(contours, image, centerX, centerY):
         cv2.putText(image, "Yaw: " + str(finalTarget[1]), (40, 40), cv2.FONT_HERSHEY_COMPLEX, .6,
                     (255, 255, 255))
         cv2.line(image, (finalTarget[0], screenHeight), (finalTarget[0], 0), (255, 0, 0), 2)
+
         currentAngleError = finalTarget[1]
         #TODO send currentAngleError to robot program
+    cv2.line(image, (round(centerX), screenHeight), (round(centerX), 0), (255, 255, 255), 2)
+
     return image
 
 
@@ -276,6 +278,26 @@ def calculatePitch(pixelY, centerY, vFocalLength):
     pitch *= -1
     return round(pitch)
 
+def getEllipseRotation(image, cnt):
+    # Gets rotated bounding ellipse of contour
+    ellipse = cv2.fitEllipse(cnt)
+    centerE = ellipse[0]
+    # Gets rotation of ellipse; same as rotation of contour
+    rotation = ellipse[2]
+    # Gets width and height of rotated ellipse
+    widthE = ellipse[1][0]
+    heightE = ellipse[1][1]
+    # Maps rotation to (-90 to 90). Makes it easier to tell direction of slant
+    rotation = translateRotation(rotation, widthE, heightE)
+
+    # Gets smaller side
+    if widthE > heightE:
+        smaller_side = heightE
+    else:
+        smaller_side = widthE
+
+    cv2.ellipse(image, ellipse, (23, 184, 80), 3)
+    return rotation
 
 #################### FRC VISION PI Image Specific #############
 configFile = "/boot/frc.json"
