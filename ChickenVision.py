@@ -26,17 +26,22 @@ import math
 ###################### PROCESSING OPENCV ################################
 
 #Angles in radians
+
+#image size ratioed to 16:9
 image_width = 480
 image_height = 270
-#Lifecam 3000
+#Lifecam 3000 from datasheet
+#Datasheet: https://dl2jx7zfbtwvr.cloudfront.net/specsheets/WEBC1010.pdf
 diagonalView = math.radians(68.5)
+#16:9 aspect ratio                   
 horizontalAspect = 16
 verticalAspect = 9
-
+#Reasons for using diagonal aspcet is to calculate horizontal field of view.
 diagonalAspect = math.sqrt(math.pow(horizontalAspect, 2) + math.pow(verticalAspect, 2))
+#Calculations: http://vrguy.blogspot.com/2013/04/converting-diagonal-field-of-view-and.html
 horizontalView = math.atan(math.tan(diagonalView/2) * (horizontalAspect / diagonalAspect)) * 2
 verticalView = math.atan(math.tan(diagonalView/2) * (verticalAspect / diagonalAspect)) * 2
-
+#Focal Length calculations: https://docs.google.com/presentation/d/1ediRsI-oR3-kwawFJZ34_ZTlQS2SDBLjZasjzZ-eXbQ/pub?start=false&loop=false&slide=id.g12c083cffa_0_165
 H_FOCAL_LENGTH = image_width / (2*math.tan((horizontalView/2)))
 V_FOCAL_LENGTH = image_height / (2*math.tan((verticalView/2)))
 
