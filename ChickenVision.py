@@ -89,7 +89,9 @@ def findContours(frame, mask):
 
 
 
-# Draws Contours and finds center and yaw of vision targets ###### USED #####
+# Draws Contours and finds center and yaw of vision targets 
+# centerX is center x coordinate of image
+# centerY is center y coordinate of image
 def findTargets(contours, image, centerX, centerY):
     screenHeight, screenWidth, channels = image.shape;
     #Seen vision targets (correct angle, adjacent to each other)
