@@ -49,16 +49,21 @@ verticalView = math.atan(math.tan(diagonalView/2) * (verticalAspect / diagonalAs
 H_FOCAL_LENGTH = image_width / (2*math.tan((horizontalView/2)))
 V_FOCAL_LENGTH = image_height / (2*math.tan((verticalView/2)))
 
+#Flip image if camera mounted upside down
+def flipImage(frame):
+    return cv2.flip( frame, -1 )
+
 # Masks the video based on a range of hsv colors
 # Takes in a frame, returns a masked frame
 def threshold_video(frame):
-    blur = cv2.medianBlur(frame, 5)
+    img = frame.copy()
+    blur = cv2.medianBlur(img, 5)
 
     # Convert BGR to HSV
     hsv = cv2.cvtColor(blur, cv2.COLOR_BGR2HSV)
     # define range of red in HSV
-    lower_color = np.array([60,105,34])
-    upper_color = np.array([93, 255, 255])
+    lower_color = np.array([0,220,25])
+    upper_color = np.array([101, 255, 255])
     # hold the HSV image to get only red colors
     mask = cv2.inRange(hsv, lower_color, upper_color)
 
@@ -119,57 +124,57 @@ def findTargets(contours, image, centerX, centerY):
                     cy = int(M["m01"] / M["m00"])
                 else:
                     cx, cy = 0, 0
+                if(len(biggestCnts) < 13):
+                    #### CALCULATES ROTATION OF CONTOUR BY FITTING ELLIPSE ##########
+                    rotation = getEllipseRotation(image, cnt)
 
-                #### CALCULATES ROTATION OF CONTOUR BY FITTING ELLIPSE ##########
-                rotation = getEllipseRotation(image, cnt)
+                    # Calculates yaw of contour (horizontal position in degrees)
+                    yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
+                    # Calculates yaw of contour (horizontal position in degrees)
+                    pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
 
-                # Calculates yaw of contour (horizontal position in degrees)
-                yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
-                # Calculates yaw of contour (horizontal position in degrees)
-                pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
-
-                ##### DRAWS CONTOUR######
-                # Gets rotated bounding rectangle of contour
-                rect = cv2.minAreaRect(cnt)
-                # Creates box around that rectangle
-                box = cv2.boxPoints(rect)
-                # Not exactly sure
-                box = np.int0(box)
-                # Draws rotated rectangle
-                cv2.drawContours(image, [box], 0, (23, 184, 80), 3)
-
-
-                # Calculates yaw of contour (horizontal position in degrees)
-                yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
-                # Calculates yaw of contour (horizontal position in degrees)
-                pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
+                    ##### DRAWS CONTOUR######
+                    # Gets rotated bounding rectangle of contour
+                    rect = cv2.minAreaRect(cnt)
+                    # Creates box around that rectangle
+                    box = cv2.boxPoints(rect)
+                    # Not exactly sure
+                    box = np.int0(box)
+                    # Draws rotated rectangle
+                    cv2.drawContours(image, [box], 0, (23, 184, 80), 3)
 
 
-                # Draws a vertical white line passing through center of contour
-                cv2.line(image, (cx, screenHeight), (cx, 0), (255, 255, 255))
-                # Draws a white circle at center of contour
-                cv2.circle(image, (cx, cy), 6, (255, 255, 255))
+                    # Calculates yaw of contour (horizontal position in degrees)
+                    yaw = calculateYaw(cx, centerX, H_FOCAL_LENGTH)
+                    # Calculates yaw of contour (horizontal position in degrees)
+                    pitch = calculatePitch(cy, centerY, V_FOCAL_LENGTH)
 
-                # Draws the contours
-                cv2.drawContours(image, [cnt], 0, (23, 184, 80), 1)
 
-                # Gets the (x, y) and radius of the enclosing circle of contour
-                (x, y), radius = cv2.minEnclosingCircle(cnt)
-                # Rounds center of enclosing circle
-                center = (int(x), int(y))
-                # Rounds radius of enclosning circle
-                radius = int(radius)
-                # Makes bounding rectangle of contour
-                rx, ry, rw, rh = cv2.boundingRect(cnt)
-                boundingRect = cv2.boundingRect(cnt)
-                # Draws countour of bounding rectangle and enclosing circle in green
-                cv2.rectangle(image, (rx, ry), (rx + rw, ry + rh), (23, 184, 80), 1)
+                    # Draws a vertical white line passing through center of contour
+                    cv2.line(image, (cx, screenHeight), (cx, 0), (255, 255, 255))
+                    # Draws a white circle at center of contour
+                    cv2.circle(image, (cx, cy), 6, (255, 255, 255))
 
-                cv2.circle(image, center, radius, (23, 184, 80), 1)
+                    # Draws the contours
+                    cv2.drawContours(image, [cnt], 0, (23, 184, 80), 1)
 
-                # Appends important info to array
-                if [cx, cy, rotation, cnt] not in biggestCnts:
-                     biggestCnts.append([cx, cy, rotation, cnt])
+                    # Gets the (x, y) and radius of the enclosing circle of contour
+                    (x, y), radius = cv2.minEnclosingCircle(cnt)
+                    # Rounds center of enclosing circle
+                    center = (int(x), int(y))
+                    # Rounds radius of enclosning circle
+                    radius = int(radius)
+                    # Makes bounding rectangle of contour
+                    rx, ry, rw, rh = cv2.boundingRect(cnt)
+                    boundingRect = cv2.boundingRect(cnt)
+                    # Draws countour of bounding rectangle and enclosing circle in green
+                    cv2.rectangle(image, (rx, ry), (rx + rw, ry + rh), (23, 184, 80), 1)
+
+                    cv2.circle(image, center, radius, (23, 184, 80), 1)
+
+                    # Appends important info to array
+                    if [cx, cy, rotation, cnt] not in biggestCnts:
+                         biggestCnts.append([cx, cy, rotation, cnt])
 
 
         # Sorts array based on coordinates (leftmost to rightmost) to make sure contours are adjacent
@@ -225,7 +230,7 @@ def findTargets(contours, image, centerX, centerY):
 
 # Checks if contours are worthy based off of contour area and (not currently) hull area
 def checkContours(cntSize, hullSize):
-    return cntSize > 10
+    return cntSize > 200
 
 
 #Forgot how exactly it works, but it works!
@@ -279,25 +284,43 @@ def calculatePitch(pixelY, centerY, vFocalLength):
     return round(pitch)
 
 def getEllipseRotation(image, cnt):
-    # Gets rotated bounding ellipse of contour
-    ellipse = cv2.fitEllipse(cnt)
-    centerE = ellipse[0]
-    # Gets rotation of ellipse; same as rotation of contour
-    rotation = ellipse[2]
-    # Gets width and height of rotated ellipse
-    widthE = ellipse[1][0]
-    heightE = ellipse[1][1]
-    # Maps rotation to (-90 to 90). Makes it easier to tell direction of slant
-    rotation = translateRotation(rotation, widthE, heightE)
+    try:
+        # Gets rotated bounding ellipse of contour
+        ellipse = cv2.fitEllipse(cnt)
+        centerE = ellipse[0]
+        # Gets rotation of ellipse; same as rotation of contour
+        rotation = ellipse[2]
+        # Gets width and height of rotated ellipse
+        widthE = ellipse[1][0]
+        heightE = ellipse[1][1]
+        # Maps rotation to (-90 to 90). Makes it easier to tell direction of slant
+        rotation = translateRotation(rotation, widthE, heightE)
 
-    # Gets smaller side
-    if widthE > heightE:
-        smaller_side = heightE
-    else:
-        smaller_side = widthE
+        # Gets smaller side
+        if widthE > heightE:
+            smaller_side = heightE
+        else:
+            smaller_side = widthE
 
-    cv2.ellipse(image, ellipse, (23, 184, 80), 3)
-    return rotation
+        cv2.ellipse(image, ellipse, (23, 184, 80), 3)
+        return rotation
+    except:
+        # Gets rotated bounding rectangle of contour
+        rect = cv2.minAreaRect(cnt)
+        # Creates box around that rectangle
+        box = cv2.boxPoints(rect)
+        # Not exactly sure
+        box = np.int0(box)
+        # Gets center of rotated rectangle
+        center = rect[0]
+        # Gets rotation of rectangle; same as rotation of contour
+        rotation = rect[2]
+        # Gets width and height of rotated rectangle
+        width = rect[1][0]
+        height = rect[1][1]
+        # Maps rotation to (-90 to 90). Makes it easier to tell direction of slant
+        rotation = translateRotation(rotation, width, height)
+        return rotation
 
 #################### FRC VISION PI Image Specific #############
 configFile = "/boot/frc.json"
@@ -430,7 +453,7 @@ if __name__ == "__main__":
         # Tell the CvSink to grab a frame from the camera and put it
         # in the source image.  If there is an error notify the output.
         timestamp, img = cvSink.grabFrame(img)
-        frame = img
+        frame = flipImage(img)
         if timestamp == 0:
             # Send the output the error.
             outputStream.notifyError(cvSink.getError());
@@ -438,7 +461,7 @@ if __name__ == "__main__":
             continue
 
 
-        threshold = threshold_video(img)
+        threshold = threshold_video(frame)
         processed = findContours(frame, threshold)
         # (optional) send some image back to the dashboard
         outputStream.putFrame(processed)
