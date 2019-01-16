@@ -453,7 +453,8 @@ if __name__ == "__main__":
         # Tell the CvSink to grab a frame from the camera and put it
         # in the source image.  If there is an error notify the output.
         timestamp, img = cvSink.grabFrame(img)
-        frame = flipImage(img)
+        frame = img
+        #frame = flipImage(img)
         if timestamp == 0:
             # Send the output the error.
             outputStream.notifyError(cvSink.getError());
