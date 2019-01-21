@@ -207,10 +207,10 @@ def findTargets(contours, image, centerX, centerY):
                         continue
                 #Angle from center of camera to target (what you should pass into gyro)
                 yawToTarget = calculateYaw(centerOfTarget, centerX, H_FOCAL_LENGTH)
-				
-				#Push to NetworkTable
-				table.putNumber("yawToTarget", yawToTarget)
-				
+                
+                #Push to NetworkTable
+                table.putNumber("yawToTarget", yawToTarget)
+                
                 #Make sure no duplicates, then append
                 if [centerOfTarget, yawToTarget] not in targets:
                     targets.append([centerOfTarget, yawToTarget])
@@ -226,9 +226,9 @@ def findTargets(contours, image, centerX, centerY):
         cv2.line(image, (finalTarget[0], screenHeight), (finalTarget[0], 0), (255, 0, 0), 2)
 
         currentAngleError = finalTarget[1]
-		
-		table.putNumber("currentAngleError", currentAngleError)
-		
+        
+        table.putNumber("currentAngleError", currentAngleError)
+        
     cv2.line(image, (round(centerX), screenHeight), (round(centerX), 0), (255, 255, 255), 2)
 
     return image
@@ -430,7 +430,7 @@ if __name__ == "__main__":
 
     # start NetworkTables and create table instance
     ntinst = NetworkTablesInstance.getDefault()
-	table = NetworkTables.getTable("PiData")
+    table = NetworkTables.getTable("PiData")
     if server:
         print("Setting up NetworkTables server")
         ntinst.startServer()
