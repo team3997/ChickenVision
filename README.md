@@ -1,7 +1,8 @@
 # ChickenVision
 ![Alt text](https://cdn.discordapp.com/attachments/518873567065276416/533489000762310667/githubimage.png?raw=true "Example")
 
-<h2>Requirements</h2>
+<h2>Requirements </h2>
+<h3>Look at wiki for more updated instructions</h3>
 <ul>
   <li>Raspberry Pi running <a href="https://wpilib.screenstepslive.com/s/currentCS/m/85074/l/1027241-using-the-raspberry-pi-for-frc">WPILib image</a> </li>
   <li>Green LED Ring to surround camera (You can use different colors, but must change HSV Threshold)</li>
