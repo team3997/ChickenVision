@@ -747,7 +747,7 @@ if __name__ == "__main__":
                 processed = findCargo(frame, threshold)
         #Puts timestamp of camera on netowrk tables
         networkTable.putNumber("VideoTimestamp", timestamp)
-        streamViewer.frame = processed;
+        streamViewer.frame = processed
         # update the FPS counter
         fps.update()
         #Flushes camera values to reduce latency
