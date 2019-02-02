@@ -733,7 +733,7 @@ if __name__ == "__main__":
             processed = frame
         else:
             # Checks if you just want camera for Tape processing , False by default
-            if(networkTable.getBoolean("Tape", False))
+            if(networkTable.getBoolean("Tape", False)):
                 #Lowers exposure to 0
                 cap.autoExpose = False
                 boxBlur = blurImg(frame, green_blur)
