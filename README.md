@@ -126,6 +126,9 @@ To view Network Tables, Click the Network Tables tab and under ChickenVision dro
 ![Network Tables Dropdown](https://github.com/MRT3216/MRT3216-2019-DeepSpace/blob/master/Vision/example_photos/shuffboardNetworkTables.PNG)
 <br>
 
+## Network Tables
+
+In the code, you can send out network table values Ex. networkTable.putNumber("VideoTimestamp", timestamp). You can also put other types of data such as a boolaen and other types of data.
 
 
 
