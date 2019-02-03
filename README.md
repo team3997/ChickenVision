@@ -1,6 +1,7 @@
 # ChickenVision
 ![Alt text](https://cdn.discordapp.com/attachments/518873567065276416/533489000762310667/githubimage.png?raw=true "Example")
-
+<h2> Credit </h2>
+You don't have to give credit, but if you do, it is greatly appreciated if you tell us how Chicken Vision has helped you and your team: https://docs.google.com/spreadsheets/d/1YWcWk0oOwUUU_g2qIJem4bmJQUaB20VSqDUPqsKFyJk/edit?usp=sharing
 <h2>Requirements </h2>
 <h3>Look at wiki for more updated instructions</h3>
 <ul>
