@@ -1,7 +1,7 @@
 To tune vision, use GRIP (http://wpiroboticsprojects.github.io/GRIP/#/).
 <h2> Credit </h2>
 You don't have to give credit, but if you do, it is greatly appreciated if you tell us how Chicken Vision has helped you and your team: https://docs.google.com/spreadsheets/d/1YWcWk0oOwUUU_g2qIJem4bmJQUaB20VSqDUPqsKFyJk/edit?usp=sharing
-Also, huge thanks to team who seriously improved README.
+Also, huge thanks to team 3216 who seriously improved README and really went the extra mile in producing excellent instructions.
 
 # Requirements
 * Raspberry Pi running WPILib image (https://github.com/wpilibsuite/FRCVision-pi-gen/releases)
