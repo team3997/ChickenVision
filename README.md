@@ -1,6 +1,7 @@
-Our vision was adapted from FRC Team 3997's Chicken Vision Code (https://github.com/team3997/ChickenVision).
-<br>
 To tune vision, use GRIP (http://wpiroboticsprojects.github.io/GRIP/#/).
+<h2> Credit </h2>
+You don't have to give credit, but if you do, it is greatly appreciated if you tell us how Chicken Vision has helped you and your team: https://docs.google.com/spreadsheets/d/1YWcWk0oOwUUU_g2qIJem4bmJQUaB20VSqDUPqsKFyJk/edit?usp=sharing
+Also, huge thanks to team who seriously improved README.
 
 # Requirements
 * Raspberry Pi running WPILib image (https://github.com/wpilibsuite/FRCVision-pi-gen/releases)
@@ -131,7 +132,25 @@ To view Network Tables, Click the Network Tables tab and under ChickenVision dro
 In the code, you can send out network table values Ex. networkTable.putNumber("VideoTimestamp", timestamp). You can also put other types of data such as a boolaen and other types of data.
 
 
+<h2>Functionality/Features</h3>
+<ul>
+  <li>Sanity checks: Filters out contours whose rays form a V, only recognizes targets whose contours are adjacent</li>
+  <li>Returns the angle (in degrees) of closest target for easy integration for robot program (Gyro)</li>
+  <li>If angle is to two targets are the same, it picks the left target. You can change this in code</li>
+  <li>Pre-calculated (but sub-optimal) built in HSV Threshold range</li>
+  <li>Should be plug-and-play</li>
+  <li>All contours have green shapes around them along with a white dot and vertical line running through their center point</li>
+  <li>Targets have vertical blue line in between contours. Yaw is calculated from that x coordinate. There should only be one blue line (one Target) at a time.</li>
+  <li>Rounded yaw (horizontal angle from camera) is displayed in large white font at the top of the screen</li>
+  <li>Team 254's explanations linked in comments of angle calculation functions</li>
+</ul>
 
-
+<h2>Resources and Links</h2>
+<ul>
+  <li><a href="https://dl2jx7zfbtwvr.cloudfront.net/specsheets/WEBC1010.pdf"> Microsoft Lifecam Datasheet</a></li>
+  <li><a href="http://vrguy.blogspot.com/2013/04/converting-diagonal-field-of-view-and.html"> Calculating horizontal field of view</a></li>
+  <li><a href="https://www.team254.com/documents/vision-control/"> Calculating focal length and yaw</a></li>
+ 
+</ul>
 
 
