@@ -310,8 +310,11 @@ def findBall(contours, image, centerX, centerY):
                     cv2.circle(image, center, radius, (23, 184, 80), 1)
 
                     # Appends important info to array
-                    if [cx, cy, cnt] not in biggestCargo:
-                         biggestCargo.append([cx, cy, cnt])
+                    if not biggestCargo:
+                        biggestCargo.append([cx, cy, cnt])
+                    elif [cx, cy, cnt] not in biggestCargo:
+                        biggestCargo.append([cx, cy, cnt])
+
 
 
 
@@ -424,7 +427,9 @@ def findTape(contours, image, centerX, centerY):
                     cv2.circle(image, center, radius, (23, 184, 80), 1)
 
                     # Appends important info to array
-                    if [cx, cy, rotation, cnt] not in biggestCnts:
+                    if not biggestCnts:
+                         biggestCnts.append([cx, cy, rotation, cnt])
+                    elif [cx, cy, rotation, cnt] not in biggestCnts:
                          biggestCnts.append([cx, cy, rotation, cnt])
 
 
@@ -459,8 +464,10 @@ def findTape(contours, image, centerX, centerY):
                 #Angle from center of camera to target (what you should pass into gyro)
                 yawToTarget = calculateYaw(centerOfTarget, centerX, H_FOCAL_LENGTH)
                 #Make sure no duplicates, then append
-                if [centerOfTarget, yawToTarget] not in targets:
-                    targets.append([centerOfTarget, yawToTarget])
+                if not targets:
+                    targets.append([centerOfTarget, yawToTarget, rightCntCenterX])
+                elif [centerOfTarget, yawToTarget, rightCntCenterX] not in targets:
+                    targets.append([centerOfTarget, yawToTarget, rightCntCenterX])
     #Check if there are targets seen
     if (len(targets) > 0):
         # pushes that it sees vision target to network tables
