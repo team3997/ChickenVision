@@ -465,9 +465,9 @@ def findTape(contours, image, centerX, centerY):
                 yawToTarget = calculateYaw(centerOfTarget, centerX, H_FOCAL_LENGTH)
                 #Make sure no duplicates, then append
                 if not targets:
-                    targets.append([centerOfTarget, yawToTarget, rightCntCenterX])
-                elif [centerOfTarget, yawToTarget, rightCntCenterX] not in targets:
-                    targets.append([centerOfTarget, yawToTarget, rightCntCenterX])
+                    targets.append([centerOfTarget, yawToTarget])
+                elif [centerOfTarget, yawToTarget] not in targets:
+                    targets.append([centerOfTarget, yawToTarget])
     #Check if there are targets seen
     if (len(targets) > 0):
         # pushes that it sees vision target to network tables
