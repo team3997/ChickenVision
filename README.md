@@ -1,8 +1,10 @@
 To tune vision, use GRIP (http://wpiroboticsprojects.github.io/GRIP/#/).
 <h2> Credit </h2>
 You don't have to give credit, but if you do, it is greatly appreciated if you tell us how Chicken Vision has helped you and your team: https://docs.google.com/spreadsheets/d/1YWcWk0oOwUUU_g2qIJem4bmJQUaB20VSqDUPqsKFyJk/edit?usp=sharing
-Also, huge thanks to Team 3216 who seriously improved README and really went the extra mile in producing excellent instructions.
-
+ <ul>
+ <li>Huge thanks to Team 66 for teaching me how to use Network Tables and giving an example with ChickenVision</li>
+ <li>Huge thanks to Team 3216 who seriously improved README and really went the extra mile in producing excellent instructions.</li>
+</ul>
 # Requirements
 * Raspberry Pi running WPILib image (https://github.com/wpilibsuite/FRCVision-pi-gen/releases)
 * Bright, small (60mm), green LED Ring to surround camera (You can use different colors, but must change HSV Threshold)
