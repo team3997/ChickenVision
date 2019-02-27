@@ -11,7 +11,7 @@ Also, huge thanks to Team 3216 who seriously improved README and really went the
 * Camera mounted in horizontal center of robot. Code can be updated to support offsets, but I currently do not know how to do that
 * For Windows: Download NI Driver Station (http://www.ni.com/download/labview-for-frc-18.0/7841/en/)
 * Chicken Vision Code (https://github.com/MRT3216/MRT3216-2019-DeepSpace/blob/master/Vision/ChickenVision.py)
-* FRC Update Suite (http://download.ni.com/support/softlib/first/frc/FileAttachments/FRCUpdateSuite_2019.1.0.zip) (extract and install)
+* FRC Update Suite (http://download.ni.com/support/softlib/first/frc/FileAttachments/FRCUpdateSuite_2019.2.0.zip) (extract and install)
 
 # Tuning For Reflective Tape
 <br>
