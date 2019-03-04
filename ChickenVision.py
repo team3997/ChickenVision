@@ -428,9 +428,9 @@ def findTape(contours, image, centerX, centerY):
 
                     # Appends important info to array
                     if not biggestCnts:
-                         biggestCnts.append([cx, cy, rotation, cnt])
-                    elif [cx, cy, rotation, cnt] not in biggestCnts:
-                         biggestCnts.append([cx, cy, rotation, cnt])
+                         biggestCnts.append([cx, cy, rotation])
+                    elif [cx, cy, rotation] not in biggestCnts:
+                         biggestCnts.append([cx, cy, rotation])
 
 
         # Sorts array based on coordinates (leftmost to rightmost) to make sure contours are adjacent
