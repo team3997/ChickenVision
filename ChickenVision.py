@@ -339,7 +339,7 @@ def findBall(contours, image, centerX, centerY):
             # Draws yaw of target + line where center of target is
             cv2.putText(image, "Yaw: " + str(finalTarget), (40, 40), cv2.FONT_HERSHEY_COMPLEX, .6,
                         (255, 255, 255))
-            cv2.line(image, (xCoord, screenHeight), (xCoord, 0), (255, 0, 0), 2)
+            cv2.line(image, (int(xCoord), screenHeight), (int(xCoord), 0), (255, 0, 0), 2)
 
             currentAngleError = finalTarget
             #pushes cargo angle to network tables
@@ -349,7 +349,7 @@ def findBall(contours, image, centerX, centerY):
             #pushes that it doesn't see cargo to network tables
             networkTable.putBoolean("cargoDetected", False)
 
-        cv2.line(image, (round(centerX), screenHeight), (round(centerX), 0), (255, 255, 255), 2)
+        cv2.line(image, (int(centerX), screenHeight), (int(centerX), 0), (255, 255, 255), 2)
 
         return image
 
