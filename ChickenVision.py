@@ -59,14 +59,16 @@ class FPS:
 	def fps(self):
 		# compute the (approximate) frames per second
 		return self._numFrames / self.elapsed()
-#class that runs separate thread for showing video,
+
+
+# class that runs separate thread for showing video,
 class VideoShow:
     """
     Class that continuously shows a frame using a dedicated thread.
     """
 
-    def __init__(self, imgWidth, imgHeight, cameraServer, frame=None):
-        self.outputStream = cameraServer.putVideo("stream", imgWidth, imgHeight)
+    def __init__(self, imgWidth, imgHeight, cameraServer, frame=None, name='stream'):
+        self.outputStream = cameraServer.putVideo(name, imgWidth, imgHeight)
         self.frame = frame
         self.stopped = False
 
@@ -80,10 +82,10 @@ class VideoShow:
 
     def stop(self):
         self.stopped = True
+
     def notifyError(self, error):
         self.outputStream.notifyError(error)
 
-# Class that runs a separate thread for reading  camera server also controlling exposure.
 class WebcamVideoStream:
     def __init__(self, camera, cameraServer, frameWidth, frameHeight, name="WebcamVideoStream"):
         # initialize the video camera stream and read the first frame
@@ -98,7 +100,7 @@ class WebcamVideoStream:
         #Make a blank image to write on
         self.img = np.zeros(shape=(frameWidth, frameHeight, 3), dtype=np.uint8)
         #Gets the video
-        self.stream = cameraServer.getVideo()
+        self.stream = cameraServer.getVideo(camera = camera)
         (self.timestamp, self.img) = self.stream.grabFrame(self.img)
 
         # initialize the thread name
@@ -123,13 +125,11 @@ class WebcamVideoStream:
                 return
             #Boolean logic we don't keep setting exposure over and over to the same value
             if self.autoExpose:
-                if(self.autoExpose != self.prevValue):
-                    self.prevValue = self.autoExpose
-                    self.webcam.setExposureAuto()
+
+                self.webcam.setExposureAuto()
             else:
-                if (self.autoExpose != self.prevValue):
-                    self.prevValue = self.autoExpose
-                    self.webcam.setExposureManual(0)
+
+                self.webcam.setExposureManual(0)
             #gets the image and timestamp from cameraserver
             (self.timestamp, self.img) = self.stream.grabFrame(self.img)
 
@@ -142,7 +142,6 @@ class WebcamVideoStream:
         self.stopped = True
     def getError(self):
         return self.stream.getError()
-
 ###################### PROCESSING OPENCV ################################
 
 #Angles in radians
@@ -221,6 +220,10 @@ def findTargets(frame, mask):
     # Processes the contours, takes in (contours, output_image, (centerOfImage)
     if len(contours) != 0:
         image = findTape(contours, image, centerX, centerY)
+    else:
+        # pushes that it deosn't see vision target to network tables
+        networkTable.putBoolean("tapeDetected", False)
+
     # Shows the contours overlayed on the original video
     return image
 
@@ -239,6 +242,9 @@ def findCargo(frame, mask):
     # Processes the contours, takes in (contours, output_image, (centerOfImage)
     if len(contours) != 0:
         image = findBall(contours, image, centerX, centerY)
+    else:
+        # pushes that it doesn't see cargo to network tables
+        networkTable.putBoolean("cargoDetected", False)
     # Shows the contours overlayed on the original video
     return image
 
@@ -311,9 +317,9 @@ def findBall(contours, image, centerX, centerY):
 
                     # Appends important info to array
                     if not biggestCargo:
-                        biggestCargo.append([cx, cy, cnt])
+                        biggestCargo.append([cx, cy])
                     elif [cx, cy, cnt] not in biggestCargo:
-                        biggestCargo.append([cx, cy, cnt])
+                        biggestCargo.append([cx, cy])
 
 
 
@@ -715,20 +721,23 @@ if __name__ == "__main__":
     # Allocating new images is very expensive, always try to preallocate
     img = np.zeros(shape=(image_height, image_width, 3), dtype=np.uint8)
     #Start thread outputing stream
-    streamViewer = VideoShow(image_width,image_height, cameraServer, frame=img).start()
+    streamViewer = VideoShow(image_width,image_height, cameraServer, frame=img, name="ChickenVision").start()
     #cap.autoExpose=True;
     tape = False
     fps = FPS().start()
     #TOTAL_FRAMES = 200;
     # loop forever
     while True:
+
+
         # Tell the CvSink to grab a frame from the camera and put it
         # in the source image.  If there is an error notify the output.
         timestamp, img = cap.read()
+
         #Uncomment if camera is mounted upside down
-        #frame = flipImage(img)
+        frame = flipImage(img)
         #Comment out if camera is mounted upside down
-        frame = img
+        #frame = img
         if timestamp == 0:
             # Send the output the error.
             streamViewer.notifyError(cap.getError());
@@ -740,7 +749,7 @@ if __name__ == "__main__":
             processed = frame
         else:
             # Checks if you just want camera for Tape processing , False by default
-            if(networkTable.getBoolean("Tape", False)):
+            if(networkTable.getBoolean("Tape", True)):
                 #Lowers exposure to 0
                 cap.autoExpose = False
                 boxBlur = blurImg(frame, green_blur)
