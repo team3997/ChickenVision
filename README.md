@@ -26,6 +26,7 @@ Tweet <b>#ChickenVision</b>! Let's try to get it trending!
 Once GRIP is downloaded, open it. Afterwards, click sources and click IP Camera. To find the IP of the raspberry pi, use a network scanner such as FING for android (https://play.google.com/store/apps/details?id=com.overlook.android.fing&hl=en_US). Once you have found the IP, put that in the box. Sometimes, the host name works, making it so that you can use frcvision.local/ rather than the IP.
 
 ### Configuring GRIP
+The address should be frcvision.local:1181/stream.mjpg <br>
 From the operation palate (The right side of GRIP) (picture below) 
 <br> 
 ![GRIP palate](https://github.com/MRT3216/MRT3216-2019-DeepSpace/blob/master/Vision/example_photos/palate.PNG) 
