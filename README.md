@@ -1,3 +1,5 @@
+<h1> Deprecated! Use <a href="https://chameleon-vision.readthedocs.io/en/latest/installation/coprocessor-setup.html">ChameleonVision</a> or <a href="https://opensight-cv.github.io/">OpenSight</a> instead </h1>
+Thank you to all who participated. I hope we helped kickedstart the open-source movement in FRC vision. Due to the Screaming Chickens disbanding, I can no longer maintain ChickenVision for the 2020 season.
 <h2> Welcome to Chicken Vision </h2>
 <img src="https://github.com/team3997/ChickenVision/blob/master/StickerVision.svg"/>
 To tune vision, use GRIP (http://wpiroboticsprojects.github.io/GRIP/#/).
